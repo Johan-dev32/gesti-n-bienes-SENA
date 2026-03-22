@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Detalle de Bien</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f6f9;
+font-family:Segoe UI;
+}
+
+.navbar-sena{
+background:#39A900;
+}
+
+.navbar-brand{
+color:white;
+font-weight:bold;
+}
+
+.card{
+border:none;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-header{
+background:#39A900;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-sena">
+<div class="container">
+<span class="navbar-brand">SENA | Detalle del Bien</span>
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-10">
+
+<div class="card">
+
+<div class="card-header text-white">
+<h3>💻 Detalle del Bien</h3>
+</div>
+
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<strong>ID:</strong>
+<span th:text="${bien.id}"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<strong>Modelo:</strong>
+<span th:text="${bien.modelo}"></span>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<strong>Consecutivo:</strong>
+<span th:text="${bien.consecutivo}"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<strong>Placa:</strong>
+<span th:text="${bien.placa}"></span>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<strong>Regional:</strong>
+<span th:text="${bien.centro != null ? bien.centro.regional : 'Sin regional'}"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<strong>Centro:</strong>
+<span th:text="${bien.centro != null ? bien.centro.nombre : 'Sin centro'}"></span>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<strong>Valor:</strong>
+<span th:text="${bien.valor != null ? '$' + bien.valor : '-'}"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<strong>Fecha Adquisición:</strong>
+<span th:text="${bien.fechaAdquisicion}"></span>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<strong>Expiración:</strong>
+<span th:text="${bien.expiracion}"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<strong>Instructor:</strong>
+<span th:text="${bien.instructor != null ? bien.instructor.nombres + ' ' + bien.instructor.apellidos : 'Sin asignar'}"></span>
+</div>
+
+</div>
+
+<div class="mb-3">
+<strong>Descripción:</strong><br>
+<span th:text="${bien.descripcion}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Atributos:</strong><br>
+<span th:text="${bien.atributos}"></span>
+</div>
+
+<div class="d-flex justify-content-between">
+
+<a href="/bien/lista" class="btn btn-secondary">⬅️ Volver</a>
+
+<a th:href="@{/bien/formulario/{id}(id=${bien.id})}"
+class="btn btn-warning">✏️ Editar</a>
+
+<a th:href="@{/bien/eliminar/{id}(id=${bien.id})}"
+class="btn btn-danger"
+onclick="return confirm('¿Estás seguro de eliminar este bien?')">🗑️ Eliminar</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

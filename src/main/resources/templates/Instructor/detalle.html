@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Detalle de Instructor</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f6f9;
+font-family:Segoe UI;
+}
+
+.navbar-sena{
+background:#39A900;
+}
+
+.navbar-brand{
+color:white;
+font-weight:bold;
+}
+
+.card{
+border:none;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-header{
+background:#39A900;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-sena">
+<div class="container">
+<span class="navbar-brand">SENA | Detalle de Instructor</span>
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-8">
+
+<div class="card">
+
+<div class="card-header text-white">
+<h3>👨‍🏫 Detalle del Instructor</h3>
+</div>
+
+<div class="card-body">
+
+<div class="mb-3">
+<strong>ID:</strong>
+<span th:text="${instructor.id}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Nombres:</strong>
+<span th:text="${instructor.nombres}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Apellidos:</strong>
+<span th:text="${instructor.apellidos}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Correo:</strong>
+<span th:text="${instructor.correo}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Celular:</strong>
+<span th:text="${instructor.celular}"></span>
+</div>
+
+<div class="mb-3">
+<strong>Bienes Asignados:</strong>
+<span th:text="${instructor.bienes != null ? instructor.bienes.size() : 0}"></span>
+</div>
+
+<div class="d-flex justify-content-between">
+
+<a href="/instructor/lista" class="btn btn-secondary">⬅️ Volver</a>
+
+<a th:href="@{/instructor/formulario/{id}(id=${instructor.id})}" class="btn btn-warning">✏️ Editar</a>
+
+<a th:href="@{/instructor/eliminar/{id}(id=${instructor.id})}"
+class="btn btn-danger"
+onclick="return confirm('¿Estás seguro de eliminar este instructor?')">🗑️ Eliminar</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

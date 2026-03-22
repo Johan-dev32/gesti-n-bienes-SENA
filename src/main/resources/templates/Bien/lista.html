@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de Bienes</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f6f9;
+font-family:Segoe UI;
+}
+
+.navbar-sena{
+background:#39A900;
+}
+
+.navbar-brand{
+color:white;
+font-weight:bold;
+}
+
+.card{
+border:none;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn-sena{
+background:#39A900;
+color:white;
+border:none;
+}
+
+.btn-sena:hover{
+background:#2e7d32;
+}
+
+.table thead{
+background:#39A900;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-sena">
+<div class="container">
+<span class="navbar-brand">SENA | Gestión de Bienes</span>
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+<h1>💻 Listado de Bienes (Equipos PC)</h1>
+<a href="/bien/formulario" class="btn btn-sena">➕ Nuevo Bien</a>
+</div>
+
+<div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+<span th:text="${mensaje}"></span>
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+<span th:text="${error}"></span>
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<div class="card">
+
+<div class="card-body">
+
+<table class="table table-hover align-middle">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Modelo</th>
+<th>Consecutivo</th>
+<th>Placa</th>
+<th>Valor</th>
+<th>Instructor</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr th:each="bien : ${bienes}">
+
+<td th:text="${bien.id}"></td>
+<td th:text="${bien.modelo}"></td>
+<td th:text="${bien.consecutivo}"></td>
+<td th:text="${bien.placa}"></td>
+
+<td th:text="${bien.valor != null ? '$' + bien.valor : '-'}"></td>
+
+<td th:text="${bien.instructor != null ? bien.instructor.nombres + ' ' + bien.instructor.apellidos : 'Sin asignar'}"></td>
+
+<td>
+
+<a th:href="@{/bien/detalle/{id}(id=${bien.id})}"
+class="btn btn-sm btn-info">👁️</a>
+
+<a th:href="@{/bien/formulario/{id}(id=${bien.id})}"
+class="btn btn-sm btn-warning">✏️</a>
+
+<a th:href="@{/bien/eliminar/{id}(id=${bien.id})}"
+class="btn btn-sm btn-danger"
+onclick="return confirm('¿Estás seguro de eliminar este bien?')">🗑️</a>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<div th:if="${#lists.isEmpty(bienes)}" class="alert alert-info mt-3">
+No hay bienes registrados.
+</div>
+
+<div class="mt-4 text-center">
+<a href="/" class="btn btn-secondary">⬅️ Volver al Inicio</a>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Bienes - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            background-color:#f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-sena{
+            background-color:#39A900;
+        }
+
+        .navbar-sena .navbar-brand{
+            color:white;
+            font-weight:bold;
+            font-size:20px;
+        }
+
+        .titulo-principal{
+            font-weight:700;
+            color:#2e2e2e;
+        }
+
+        .card{
+            border:none;
+            border-radius:15px;
+            transition: all 0.3s ease;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card:hover{
+            transform: translateY(-5px);
+            box-shadow:0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-title{
+            font-weight:600;
+        }
+
+        .btn-sena{
+            background-color:#39A900;
+            border:none;
+        }
+
+        .btn-sena:hover{
+            background-color:#2d8300;
+        }
+
+        footer{
+            margin-top:60px;
+            padding:20px;
+            text-align:center;
+            color:#777;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-sena">
+    <div class="container">
+        <span class="navbar-brand">SENA | Sistema de Gestión</span>
+    </div>
+</nav>
+
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="titulo-principal">🏢 Gestión de Bienes e Instructores</h1>
+        <p class="lead">Sistema de registro y control de equipos e instructores</p>
+    </div>
+
+    <div class="row justify-content-center">
+
+
+        <div class="col-md-5 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title mb-3">👨‍🏫 Instructores</h3>
+                    <p class="card-text">
+                        Gestiona la información de los instructores del sistema.
+                    </p>
+                    <a href="/instructor/lista" class="btn btn-sena btn-lg">
+                        Ver Instructores
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-5 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title mb-3">💻 Bienes</h3>
+                    <p class="card-text">
+                        Gestiona el inventario de bienes y equipos.
+                    </p>
+                    <a href="/bien/lista" class="btn btn-sena btn-lg">
+                        Ver Bienes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-5 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title mb-3">🌎 Regionales</h3>
+                    <p class="card-text">
+                        Gestiona las regionales del SENA.
+                    </p>
+                    <a href="/regional" class="btn btn-sena btn-lg">
+                        Ver Regionales
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-5 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title mb-3">🏫 Centros</h3>
+                    <p class="card-text">
+                        Gestiona los centros de formación.
+                    </p>
+                    <a href="/centro" class="btn btn-sena btn-lg">
+                        Ver Centros
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    © 2026 Registros SENA - Todos los derechos reservados
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
