@@ -1,6 +1,9 @@
 package com.RegistrosSena.gestion_bienes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 @Entity
@@ -11,19 +14,22 @@ public class Regional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El código es obligatorio")
+    @Column(unique = true, nullable = false)
     private String codigo;
 
+    @NotBlank(message = "El nombre es obligatorio")
+    @Column(unique = true, nullable = false)
     private String nombre;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "regional")
     private List<CentroFormacion> centros;
 
+    // GETTERS Y SETTERS
+
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCodigo() {

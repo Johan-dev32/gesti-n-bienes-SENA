@@ -1,45 +1,23 @@
-package com.RegistrosSena.gestion_bienes.model;
+package com.RegistrosSena.gestion_bienes.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.List;
-
-@Entity
-@Table(name = "instructores")
-public class Instructor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class InstructorDTO {
 
     @NotBlank(message = "El nombre es obligatorio")
-    @Column(nullable = false)
     private String nombres;
 
     @NotBlank(message = "El apellido es obligatorio")
-    @Column(nullable = false)
     private String apellidos;
 
     @Email(message = "Debe ser un correo válido")
     @NotBlank(message = "El correo es obligatorio")
-    @Column(unique = true, nullable = false)
     private String correo;
 
     @NotBlank(message = "El celular es obligatorio")
-    @Column(nullable = false)
     private String celular;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Bien> bienes;
-
     // GETTERS Y SETTERS
-
-    public Long getId() {
-        return id;
-    }
 
     public String getNombres() {
         return nombres;
@@ -71,13 +49,5 @@ public class Instructor {
 
     public void setCelular(String celular) {
         this.celular = celular;
-    }
-
-    public List<Bien> getBienes() {
-        return bienes;
-    }
-
-    public void setBienes(List<Bien> bienes) {
-        this.bienes = bienes;
     }
 }
