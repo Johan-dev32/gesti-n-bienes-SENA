@@ -1,19 +1,34 @@
 package com.RegistrosSena.gestion_bienes.dto;
 
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public class BienDTO {
 
     private Long id;
+
+    @NotBlank
     private String modelo;
+
+    @NotBlank
     private String consecutivo;
-    private String placa;
+
+    private String elementoDescripcion;
     private String descripcion;
+    private String placa;
     private String atributos;
-    private String nombreInstructor;
-    private String nombreCentro;
-    private String nombreRegional;
-    private String fechaAdquisicion;
-    private String expiracion;
-    private Double valor;
+
+    private LocalDate fechaAdquisicion;
+    private LocalDate expiracion;
+
+    private BigDecimal valor;
+
+    @NotNull
+    private Long idInstructor;
+
+    @NotNull
+    private Long idCentro;
 
     // GETTERS Y SETTERS
 
@@ -41,12 +56,12 @@ public class BienDTO {
         this.consecutivo = consecutivo;
     }
 
-    public String getPlaca() {
-        return placa;
+    public String getElementoDescripcion() {
+        return elementoDescripcion;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public void setElementoDescripcion(String elementoDescripcion) {
+        this.elementoDescripcion = elementoDescripcion;
     }
 
     public String getDescripcion() {
@@ -57,6 +72,14 @@ public class BienDTO {
         this.descripcion = descripcion;
     }
 
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
     public String getAtributos() {
         return atributos;
     }
@@ -65,51 +88,43 @@ public class BienDTO {
         this.atributos = atributos;
     }
 
-    public String getNombreInstructor() {
-        return nombreInstructor;
-    }
-
-    public void setNombreInstructor(String nombreInstructor) {
-        this.nombreInstructor = nombreInstructor;
-    }
-
-    public String getNombreCentro() {
-        return nombreCentro;
-    }
-
-    public void setNombreCentro(String nombreCentro) {
-        this.nombreCentro = nombreCentro;
-    }
-
-    public String getNombreRegional() {
-        return nombreRegional;
-    }
-
-    public void setNombreRegional(String nombreRegional) {
-        this.nombreRegional = nombreRegional;
-    }
-
-    public String getFechaAdquisicion() {
+    public LocalDate getFechaAdquisicion() {
         return fechaAdquisicion;
     }
 
-    public void setFechaAdquisicion(String fechaAdquisicion) {
+    public void setFechaAdquisicion(LocalDate fechaAdquisicion) {
         this.fechaAdquisicion = fechaAdquisicion;
     }
 
-    public String getExpiracion() {
+    public LocalDate getExpiracion() {
         return expiracion;
     }
 
-    public void setExpiracion(String expiracion) {
+    public void setExpiracion(LocalDate expiracion) {
         this.expiracion = expiracion;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public Long getIdInstructor() {
+        return idInstructor;
+    }
+
+    public void setIdInstructor(Long idInstructor) {
+        this.idInstructor = idInstructor;
+    }
+
+    public Long getIdCentro() {
+        return idCentro;
+    }
+
+    public void setIdCentro(Long idCentro) {
+        this.idCentro = idCentro;
     }
 }

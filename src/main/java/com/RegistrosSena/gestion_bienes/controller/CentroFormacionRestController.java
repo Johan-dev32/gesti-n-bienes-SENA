@@ -1,8 +1,13 @@
 package com.RegistrosSena.gestion_bienes.controller;
 
 import com.RegistrosSena.gestion_bienes.model.CentroFormacion;
+import com.RegistrosSena.gestion_bienes.model.Regional;
 import com.RegistrosSena.gestion_bienes.service.CentroFormacionService;
+import com.RegistrosSena.gestion_bienes.service.RegionalService;
 import com.RegistrosSena.gestion_bienes.dto.CentroDTO;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +18,12 @@ import java.util.List;
 public class CentroFormacionRestController {
 
     private final CentroFormacionService service;
+    private final RegionalService regionalService;
 
-    public CentroFormacionRestController(CentroFormacionService service) {
+    public CentroFormacionRestController(CentroFormacionService service,
+            RegionalService regionalService) {
         this.service = service;
+        this.regionalService = regionalService;
     }
 
     @GetMapping
@@ -29,7 +37,7 @@ public class CentroFormacionRestController {
             dto.setCodigo(c.getCodigo());
 
             if (c.getRegional() != null) {
-                dto.setNombreRegional(c.getRegional().getNombre());
+                dto.setIdRegional(c.getRegional().getId());
             }
 
             return dto;
@@ -37,15 +45,25 @@ public class CentroFormacionRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CentroDTO> guardarCentro(@RequestBody CentroFormacion centro) {
+    public ResponseEntity<CentroDTO> guardarCentro(@Valid @RequestBody CentroDTO dto) {
 
-        service.guardar(centro);
+        Regional regional = regionalService.getRegionalById(dto.getIdRegional())
+                .orElseThrow(() -> new RuntimeException("Regional no encontrada"));
 
-        CentroDTO dto = new CentroDTO();
-        dto.setNombre(centro.getNombre());
-        dto.setCodigo(centro.getCodigo());
+        CentroFormacion centro = new CentroFormacion();
+        centro.setNombre(dto.getNombre());
+        centro.setCodigo(dto.getCodigo());
+        centro.setRegional(regional);
 
-        return ResponseEntity.status(201).body(dto);
+        CentroFormacion guardado = service.guardar(centro);
+
+        CentroDTO response = new CentroDTO();
+        response.setId(guardado.getId());
+        response.setNombre(guardado.getNombre());
+        response.setCodigo(guardado.getCodigo());
+        response.setIdRegional(regional.getId());
+
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/{id}")
@@ -63,7 +81,7 @@ public class CentroFormacionRestController {
         dto.setCodigo(centro.getCodigo());
 
         if (centro.getRegional() != null) {
-            dto.setNombreRegional(centro.getRegional().getNombre());
+            dto.setIdRegional(centro.getRegional().getId());
         }
 
         return ResponseEntity.ok(dto);
@@ -85,7 +103,7 @@ public class CentroFormacionRestController {
     @PutMapping("/{id}")
     public ResponseEntity<CentroDTO> actualizar(
             @PathVariable Long id,
-            @RequestBody CentroFormacion centroActualizado) {
+            @Valid @RequestBody CentroDTO dto) {
 
         CentroFormacion existente = service.getCentroById(id);
 
@@ -93,15 +111,21 @@ public class CentroFormacionRestController {
             return ResponseEntity.notFound().build();
         }
 
-        existente.setNombre(centroActualizado.getNombre());
-        existente.setCodigo(centroActualizado.getCodigo());
+        Regional regional = regionalService.getRegionalById(dto.getIdRegional())
+                .orElseThrow(() -> new RuntimeException("Regional no encontrada"));
+
+        existente.setNombre(dto.getNombre());
+        existente.setCodigo(dto.getCodigo());
+        existente.setRegional(regional);
 
         CentroFormacion actualizado = service.guardar(existente);
 
-        CentroDTO dto = new CentroDTO();
-        dto.setId(actualizado.getId());
-        dto.setNombre(actualizado.getNombre());
+        CentroDTO response = new CentroDTO();
+        response.setId(actualizado.getId());
+        response.setNombre(actualizado.getNombre());
+        response.setCodigo(actualizado.getCodigo());
+        response.setIdRegional(regional.getId());
 
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(response);
     }
 }

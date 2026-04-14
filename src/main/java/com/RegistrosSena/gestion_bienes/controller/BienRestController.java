@@ -2,7 +2,13 @@ package com.RegistrosSena.gestion_bienes.controller;
 
 import com.RegistrosSena.gestion_bienes.dto.BienDTO;
 import com.RegistrosSena.gestion_bienes.model.Bien;
+import com.RegistrosSena.gestion_bienes.model.CentroFormacion;
+import com.RegistrosSena.gestion_bienes.model.Instructor;
 import com.RegistrosSena.gestion_bienes.service.BienService;
+import com.RegistrosSena.gestion_bienes.service.CentroFormacionService;
+import com.RegistrosSena.gestion_bienes.service.InstructorService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +20,15 @@ import java.util.List;
 public class BienRestController {
 
     private final BienService bienService;
+    private final InstructorService instructorService;
+    private final CentroFormacionService centroService;
 
-    public BienRestController(BienService bienService) {
+    public BienRestController(BienService bienService,
+            InstructorService instructorService,
+            CentroFormacionService centroService) {
         this.bienService = bienService;
+        this.instructorService = instructorService;
+        this.centroService = centroService;
     }
 
     @GetMapping
@@ -32,30 +44,18 @@ public class BienRestController {
             dto.setPlaca(b.getPlaca());
             dto.setDescripcion(b.getDescripcion());
             dto.setAtributos(b.getAtributos());
+            dto.setElementoDescripcion(b.getElementoDescripcion());
+            dto.setFechaAdquisicion(b.getFechaAdquisicion());
+            dto.setExpiracion(b.getExpiracion());
+            dto.setValor(b.getValor());
 
             if (b.getInstructor() != null) {
-                dto.setNombreInstructor(
-                        b.getInstructor().getNombres() + " " +
-                                b.getInstructor().getApellidos());
+                dto.setIdInstructor(b.getInstructor().getId());
             }
 
             if (b.getCentro() != null) {
-                dto.setNombreCentro(b.getCentro().getNombre());
-
-                if (b.getCentro().getRegional() != null) {
-                    dto.setNombreRegional(
-                            b.getCentro().getRegional().getNombre());
-                }
+                dto.setIdCentro(b.getCentro().getId());
             }
-
-            dto.setFechaAdquisicion(
-                    b.getFechaAdquisicion() != null ? b.getFechaAdquisicion().toString() : null);
-
-            dto.setExpiracion(
-                    b.getExpiracion() != null ? b.getExpiracion().toString() : null);
-
-            dto.setValor(
-                    b.getValor() != null ? b.getValor().doubleValue() : null);
 
             return dto;
 
@@ -63,9 +63,40 @@ public class BienRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Bien> guardarBien(@RequestBody Bien bien) {
+    public ResponseEntity<BienDTO> guardarBien(@Valid @RequestBody BienDTO dto) {
+
+        Instructor instructor = instructorService.getInstructorById(dto.getIdInstructor())
+                .orElseThrow(() -> new RuntimeException("Instructor no encontrado"));
+
+        CentroFormacion centro = centroService.getCentroById(dto.getIdCentro());
+
+        if (centro == null) {
+            throw new RuntimeException("Centro no encontrado");
+        }
+
+        Bien bien = new Bien();
+        bien.setModelo(dto.getModelo());
+        bien.setConsecutivo(dto.getConsecutivo());
+        bien.setPlaca(dto.getPlaca());
+        bien.setDescripcion(dto.getDescripcion());
+        bien.setAtributos(dto.getAtributos());
+        bien.setElementoDescripcion(dto.getElementoDescripcion());
+        bien.setFechaAdquisicion(dto.getFechaAdquisicion());
+        bien.setExpiracion(dto.getExpiracion());
+        bien.setValor(dto.getValor());
+
+        bien.setInstructor(instructor);
+        bien.setCentro(centro);
+
         Bien guardado = bienService.guardar(bien);
-        return ResponseEntity.status(201).body(guardado);
+
+        BienDTO response = new BienDTO();
+        response.setId(guardado.getId());
+        response.setModelo(guardado.getModelo());
+        response.setIdInstructor(instructor.getId());
+        response.setIdCentro(centro.getId());
+
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/{id}")
@@ -80,24 +111,57 @@ public class BienRestController {
         BienDTO dto = new BienDTO();
         dto.setId(bien.getId());
         dto.setModelo(bien.getModelo());
-        dto.setPlaca(bien.getPlaca());
+
+        if (bien.getInstructor() != null) {
+            dto.setIdInstructor(bien.getInstructor().getId());
+        }
+
+        if (bien.getCentro() != null) {
+            dto.setIdCentro(bien.getCentro().getId());
+        }
 
         return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Bien> actualizarBien(@PathVariable Long id, @RequestBody Bien bienDetails) {
+    public ResponseEntity<BienDTO> actualizarBien(
+            @PathVariable Long id,
+            @Valid @RequestBody BienDTO dto) {
 
         Bien bien = bienService.getBienById(id)
                 .orElseThrow(() -> new RuntimeException("Bien no encontrado"));
 
-        bien.setModelo(bienDetails.getModelo());
-        bien.setPlaca(bienDetails.getPlaca());
-        bien.setConsecutivo(bienDetails.getConsecutivo());
+        Instructor instructor = instructorService.getInstructorById(dto.getIdInstructor())
+                .orElseThrow(() -> new RuntimeException("Instructor no encontrado"));
+
+        CentroFormacion centro = centroService.getCentroById(dto.getIdCentro());
+
+        if (centro == null) {
+            throw new RuntimeException("Centro no encontrado");
+        }
+
+        bien.setModelo(dto.getModelo());
+        bien.setConsecutivo(dto.getConsecutivo());
+        bien.setPlaca(dto.getPlaca());
+        bien.setDescripcion(dto.getDescripcion());
+        bien.setAtributos(dto.getAtributos());
+        bien.setElementoDescripcion(dto.getElementoDescripcion());
+        bien.setFechaAdquisicion(dto.getFechaAdquisicion());
+        bien.setExpiracion(dto.getExpiracion());
+        bien.setValor(dto.getValor());
+
+        bien.setInstructor(instructor);
+        bien.setCentro(centro);
 
         Bien actualizado = bienService.guardar(bien);
 
-        return ResponseEntity.ok(actualizado);
+        BienDTO response = new BienDTO();
+        response.setId(actualizado.getId());
+        response.setModelo(actualizado.getModelo());
+        response.setIdInstructor(instructor.getId());
+        response.setIdCentro(centro.getId());
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

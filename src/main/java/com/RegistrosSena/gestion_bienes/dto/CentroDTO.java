@@ -1,11 +1,21 @@
 package com.RegistrosSena.gestion_bienes.dto;
 
+import jakarta.validation.constraints.*;
+
 public class CentroDTO {
 
     private Long id;
+
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
+
+    @NotBlank(message = "El código es obligatorio")
     private String codigo;
-    private String nombreRegional;
+
+    @NotNull(message = "El id de la regional es obligatorio")
+    private Long idRegional;
+
+    // GETTERS Y SETTERS
 
     public Long getId() {
         return id;
@@ -31,11 +41,11 @@ public class CentroDTO {
         this.codigo = codigo;
     }
 
-    public String getNombreRegional() {
-        return nombreRegional;
+    public Long getIdRegional() {
+        return idRegional;
     }
 
-    public void setNombreRegional(String nombreRegional) {
-        this.nombreRegional = nombreRegional;
+    public void setIdRegional(Long idRegional) {
+        this.idRegional = idRegional;
     }
 }
